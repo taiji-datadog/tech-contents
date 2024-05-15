@@ -141,8 +141,8 @@ AWSであれば、分析できる機能としてCloudWatchが使いやすいか�
 
 ここでは、前のセクションで各自のAWS環境（Cloud9）へデプロイしたLINE APIを使った会員証アプリに、RUMを仕込んで行きましょう。
 
-［UX Monitoring］→［Application Summary］→［+ New Application］
-![Screenshot 2023-05-16 at 17 22 31](https://github.com/taijihagino/datadog/assets/12064399/af2d38b6-dd3b-45e7-b8ae-bd8aa2b77543)
+［UX Monitoring］→［Real User Monitoring］→［+ New Application］
+![Screenshot 2023-07-06 at 10 29 02](https://github.com/taijihagino/datadog/assets/12064399/bc05eb0b-d0da-4c72-b393-2f32ddeade93)
 
 ![Screenshot 2023-05-16 at 17 24 31](https://github.com/taijihagino/datadog/assets/12064399/83573ee6-a342-4714-a6dc-cf418927a5a9)
 
@@ -151,7 +151,7 @@ AWSであれば、分析できる機能としてCloudWatchが使いやすいか�
 
 #### Datadogのチュートリアル通りの方法
 RUMの対象としたいファイルにコードスニペットを記述します。
-対象のファイルは、QRコード表示画面と管理画面です。それぞれ以下のように差し込んでください。
+対象のファイルは、QRコード表示画面と管理画面です。それぞれ以下のように差し込んでください。この方法で実装する場合、コードを埋め込んだページを起点としてトレースが行われることに注意してください。
 
 ■QRコード画面
 
@@ -199,11 +199,20 @@ export default {
 
 <img width="1098" alt="Screenshot 2023-06-19 at 13 25 25" src="https://github.com/taijihagino/datadog/assets/12064399/0dbc874f-21d2-4c7d-accc-b3a76c15304f">
 
+#### 共通部分
+``package.json`` へ ``@datadog/browser-rum`` を追加します。
 
-コードの編集が終えたら、再度 ``yarn deploy`` を行います。
+npmの場合： ``npm install @datadog/browser-rum`` <br>
+yarnの場合： ``yarn add @datadog/browser-rum`` <br><br>
+![Screenshot 2023-06-26 at 19 52 21](https://github.com/taijihagino/datadog/assets/12064399/36b7a215-8c26-490c-8bce-ef440df3bf92)
 
-デプロイ完了後に会員証アプリを動かすと、データがDatadogへ流れ始めます。 RUM Application Summaryで、対象のアプリケーションを選択し、Performance Monitoringを選択すると、対象のアプリの各テレメトリデータが可視化されて表示されていることが確認できます。
+コードの編集が終えたら、再度 ``yarn deploy (npm run deploy)`` を行います。
+
+デプロイ完了後に会員証アプリを動かすと、データがDatadogへ流れ始めます。 Real User MonitoringからPerformance Monitoringを選択すると、対象のアプリの各テレメトリデータが可視化されて表示されていることが確認できます。
 <img width="1479" alt="Screenshot 2023-05-27 at 20 10 27" src="https://github.com/taijihagino/datadog/assets/12064399/9dbd9ae2-9ea0-4728-8b41-87625e3d06a5">
+
+また、アプリケーションの編集画面上の「③Verify your installation」でも連携状態（データの受信状態）が確認できます。
+![Screenshot 2023-07-06 at 10 35 32](https://github.com/taijihagino/datadog/assets/12064399/f9db9876-2456-4023-9811-84d440218d75)
 
 ### Dashbordの作成
 Dashboardメニューから「New Dashboard」を選択します。
